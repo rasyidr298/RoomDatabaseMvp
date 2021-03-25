@@ -1,4 +1,4 @@
-package com.example.roommvp.activity;
+package com.example.roommvp.view.edit;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,27 +9,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.roommvp.R;
 import com.example.roommvp.database.AppDatabase;
 import com.example.roommvp.database.entity.Person;
-import com.example.roommvp.presenter.EditPresenterImp;
+import com.example.roommvp.presenter.edit.EditPresenterImp;
 import com.example.roommvp.utils.Constants;
-import com.example.roommvp.view.EditView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class EditActivity extends AppCompatActivity implements EditView {
 
     private EditPresenterImp presenterImp;
-
-    private EditText mEditName;
-    private EditText mEditAddress;
-    private EditText mEditEmail;
-    private EditText mEditPhone;
-
-    private TextInputLayout mTextInputLayoutName;
-    private TextInputLayout mTextInputLayoutAddress;
-    private TextInputLayout mTextInputLayoutEmail;
-    private TextInputLayout mTextInputLayoutPhone;
-
-    private FloatingActionButton mFab;
+    private EditText mEditName, mEditAddress, mEditEmail, mEditPhone;
+    private TextInputLayout mTextInputLayoutName, mTextInputLayoutAddress, mTextInputLayoutEmail, mTextInputLayoutPhone;
 
     private Person person;
     private boolean editMode = false;
@@ -39,47 +28,33 @@ public class EditActivity extends AppCompatActivity implements EditView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        person = new Person();
+        init();
         checkMode();
+    }
 
+    private void init() {
+        //entity
+        person = new Person();
+
+        //db
         AppDatabase db = AppDatabase.getDatabase(getApplication());
         presenterImp = new EditPresenterImp(this, db.personModel());
 
-        initViews();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (editMode) {
-            presenterImp.getPersonAndPopulate(person.id);
-        }
-    }
-
-    private void checkMode() {
-        if (getIntent().getExtras() != null) {
-            person.id = getIntent().getLongExtra(Constants.PERSON_ID, 0);
-            editMode = true;
-        }
-    }
-
-    private void initViews() {
+        //view
         mEditName = findViewById(R.id.et_name);
         mEditAddress = findViewById(R.id.et_address);
         mEditEmail = findViewById(R.id.et_email);
         mEditPhone = findViewById(R.id.et_phone);
-
         mTextInputLayoutName = findViewById(R.id.ti_name);
         mTextInputLayoutAddress = findViewById(R.id.ti_address);
         mTextInputLayoutEmail = findViewById(R.id.ti_email);
         mTextInputLayoutPhone = findViewById(R.id.ti_phone);
+        FloatingActionButton mFabSave = findViewById(R.id.fabSave);
+        mFabSave.setImageResource(editMode ? R.drawable.ic_refresh : R.drawable.ic_done);
 
-        mFab = findViewById(R.id.fab);
-        mFab.setImageResource(editMode ? R.drawable.ic_refresh : R.drawable.ic_done);
-        mFab.setOnClickListener(new View.OnClickListener() {
+        mFabSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 person.name = mEditName.getText().toString();
                 person.address = mEditAddress.getText().toString();
                 person.email = mEditEmail.getText().toString();
@@ -96,6 +71,21 @@ public class EditActivity extends AppCompatActivity implements EditView {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (editMode) {
+            presenterImp.getPersonAndPopulate(person.id);
+        }
+    }
+
+    private void checkMode() {
+        if (getIntent().getExtras() != null) {
+            person.id = getIntent().getLongExtra(Constants.PERSON_ID, 0);
+            editMode = true;
+        }
     }
 
     @Override

@@ -1,11 +1,11 @@
-package com.example.roommvp.presenter;
+package com.example.roommvp.presenter.main;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 
 import com.example.roommvp.database.dao.PersonDao;
 import com.example.roommvp.database.entity.Person;
-import com.example.roommvp.view.MainView;
+import com.example.roommvp.view.main.MainView;
 
 import java.util.List;
 

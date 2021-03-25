@@ -1,10 +1,10 @@
-package com.example.roommvp.presenter;
+package com.example.roommvp.presenter.edit;
 
 import com.example.roommvp.database.dao.PersonDao;
 import com.example.roommvp.database.entity.Person;
 import com.example.roommvp.utils.Constants;
 import com.example.roommvp.utils.Util;
-import com.example.roommvp.view.EditView;
+import com.example.roommvp.view.edit.EditView;
 
 public class EditPresenterImp implements EditPresenter {
 
@@ -18,7 +18,7 @@ public class EditPresenterImp implements EditPresenter {
 
     @Override
     public void save(Person person) {
-        long ids = this.personDao.insertPerson(person);
+        this.personDao.insertPerson(person);
         view.close();
     }
 
@@ -55,7 +55,7 @@ public class EditPresenterImp implements EditPresenter {
 
     @Override
     public void update(Person person) {
-        int ids = this.personDao.updatePerson(person);
+        this.personDao.updatePerson(person);
         view.close();
     }
 }

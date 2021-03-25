@@ -1,9 +1,10 @@
-package com.example.roommvp.activity;
+package com.example.roommvp.view.main;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -12,13 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roommvp.R;
+import com.example.roommvp.view.edit.EditActivity;
 import com.example.roommvp.database.AppDatabase;
 import com.example.roommvp.database.entity.Person;
-import com.example.roommvp.presenter.MainPresenterImp;
-import com.example.roommvp.adapter.PeopleAdapter;
+import com.example.roommvp.presenter.main.MainPresenterImp;
+import com.example.roommvp.view.adapter.PeopleAdapter;
 import com.example.roommvp.utils.Constants;
-import com.example.roommvp.view.MainView;
-import com.example.roommvp.view.OnItemClickListener;
+import com.example.roommvp.view.adapter.OnItemClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -27,7 +28,6 @@ public class MainActivity extends AppCompatActivity implements MainView, OnItemC
 
     private MainPresenterImp presenterImp;
     private PeopleAdapter adapter;
-
     private TextView mTextEmpty;
 
     @Override
@@ -35,24 +35,31 @@ public class MainActivity extends AppCompatActivity implements MainView, OnItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                presenterImp.addNewPerson();
-            }
-        });
+        init();
+    }
 
-        mTextEmpty = (TextView) findViewById(R.id.tv_empty);
+    private void init() {
+        //db
+        AppDatabase db = AppDatabase.getDatabase(getApplication());
+        presenterImp = new MainPresenterImp(this, db.personModel());
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.rv_list);
+        //view
+        FloatingActionButton fabAdd =  findViewById(R.id.fabAdd);
+        mTextEmpty = findViewById(R.id.tv_empty);
+        RecyclerView recyclerView = findViewById(R.id.rv_list);
+
+        //adapter
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new PeopleAdapter(this);
         recyclerView.setAdapter(adapter);
 
-        AppDatabase db = AppDatabase.getDatabase(getApplication());
-        presenterImp = new MainPresenterImp(this, db.personModel());
+        fabAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenterImp.addNewPerson();
+            }
+        });
     }
 
     @Override

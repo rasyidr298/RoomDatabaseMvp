@@ -1,4 +1,4 @@
-package com.example.roommvp.presenter;
+package com.example.roommvp.presenter.edit;
 
 import com.example.roommvp.database.entity.Person;
 

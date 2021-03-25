@@ -1,4 +1,4 @@
-package com.example.roommvp.view;
+package com.example.roommvp.view.adapter;
 
 import com.example.roommvp.database.entity.Person;
 

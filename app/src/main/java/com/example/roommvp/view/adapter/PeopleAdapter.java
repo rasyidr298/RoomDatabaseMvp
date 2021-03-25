@@ -1,4 +1,4 @@
-package com.example.roommvp.adapter;
+package com.example.roommvp.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.roommvp.R;
 import com.example.roommvp.database.entity.Person;
-import com.example.roommvp.view.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
